@@ -598,35 +598,153 @@
 
 //图像金子塔 上采样与降采样
 
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//int main()
+//{
+//	cv::Mat src = cv::imread("test.jpg");
+//	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
+//	cv::imshow("Input Image", src);
+//
+//	cv::Mat dst, dst2;
+//
+//	cv::pyrUp(src, dst, cv::Size(src.cols * 2, src.rows * 2)); // 上采样
+//	cv::imshow("Output Image", dst);
+//
+//	cv::pyrDown(src, dst2, cv::Size(src.cols / 2, src.rows / 2)); // 降采样
+//	cv::imshow("Output Image2", dst2);
+//
+//	//DOG
+//	cv::Mat g1, g2, gray_src, dog_img;
+//	cv::cvtColor(src, gray_src, CV_BGR2GRAY);
+//	cv::GaussianBlur(gray_src, g1, cv::Size(5, 5), 0, 0);
+//	cv::GaussianBlur(g1, g2, cv::Size(5, 5), 0, 0);
+//	cv::subtract(g1, g2, dog_img);
+//
+//	//归一化显示 如果不弄，会显示很暗
+//	cv::normalize(dog_img, dog_img, 255, 0, cv::NORM_MINMAX);
+//	cv::imshow("Dog Img", dog_img);
+//	cv::waitKey(0);
+//	std::cout << "Hello World!\n";
+//	return 0;
+//}
+
+
+
+//自定义线性滤波
+
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//int main()
+//{
+//	cv::Mat src = cv::imread("Me.png");
+//	
+//	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
+//	cv::imshow("Input Image", src);
+//
+//	//robot 算子
+//	//x方向
+//	{
+//		cv::Mat dst1;
+//		cv::Mat kernel_x = (cv::Mat_<int>(2, 2) << 1, 0, 0, -1);
+//		cv::filter2D(src, dst1, -1, kernel_x, cvPoint(-1, -1), 0.0);
+//		cv::imshow("Output Image1", dst1);
+//	}
+//	{
+//		//y方向
+//		cv::Mat dst2;
+//		cv::Mat kernel_y = (cv::Mat_<int>(2, 2) << 0, 1, -1, 0);
+//		cv::filter2D(src, dst2, -1, kernel_y, cvPoint(-1, -1), 0.0);
+//		cv::imshow("Output Image2", dst2);
+//	}
+//
+//	//sobel算了子
+//		//x方向
+//	{
+//		cv::Mat dst1;
+//		cv::Mat kernel_x = (cv::Mat_<int>(3, 3) << -1,0,1,-2,0,2,-1,0,1);
+//		cv::filter2D(src, dst1, -1, kernel_x, cvPoint(-1, -1), 0.0);
+//		cv::imshow("Output Image3", dst1);
+//	}
+//	{
+//		//y方向
+//		cv::Mat dst2;
+//		cv::Mat kernel_y = (cv::Mat_<int>(3, 3) << -1,-2,-1,0,0,0,1,2,1);
+//		cv::filter2D(src, dst2, -1, kernel_y, cvPoint(-1, -1), 0.0);
+//		cv::imshow("Output Image4", dst2);
+//	}
+//
+//	//拉普拉斯算子
+//	{
+//		cv::Mat dst1;
+//		cv::Mat kernel_x = (cv::Mat_<int>(3, 3) << 0,-1,0,-1,4,-1,0,-1,0);
+//		cv::filter2D(src, dst1, -1, kernel_x, cvPoint(-1, -1), 0.0);
+//		cv::imshow("Output Image5", dst1);
+//	}
+//
+//	//自定义核
+//
+//	{
+//		int index = 0;
+//		int ksize = 3;
+//		cv::Mat dst;
+//		while (true) {
+//			ksize = 4 + (index % 5) * 2 + 1;
+//			cv::Mat kernel = cv::Mat::ones(cv::Size(ksize, ksize), CV_32F) / (float)(ksize * ksize);
+//			cv::filter2D(src, dst, -1, kernel);
+//			index++;
+//			cv::imshow("Output Image6", dst);
+//			cv::waitKey(500);
+//		}
+//	}
+//
+//	cv::waitKey(0);
+//	return 0;
+//}
+
+//图像边缘处理
+
 #pragma comment(lib,"opencv_highgui3414d.lib")
 #pragma comment(lib,"opencv_imgproc3414d.lib")
 #pragma comment(lib,"opencv_core3414d.lib")
 #pragma comment(lib,"opencv_imgcodecs3414d.lib")
 int main()
 {
-	cv::Mat src = cv::imread("test.jpg");
+	cv::Mat src = cv::imread("Me.png");
+	cv::Mat dst;
+
 	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
 	cv::imshow("Input Image", src);
 
-	cv::Mat dst, dst2;
+	/*
+	int top = src.rows / 20;
+	int bottom = src.rows / 20;
+	int left = src.cols / 20;
+	int right = src.cols / 20;
 
-	cv::pyrUp(src, dst, cv::Size(src.cols * 2, src.rows * 2)); // 上采样
-	cv::imshow("Output Image", dst);
+	cv::RNG rng(132);
 
-	cv::pyrDown(src, dst2, cv::Size(src.cols / 2, src.rows / 2)); // 降采样
-	cv::imshow("Output Image2", dst2);
+	int borad_type = cv::BorderTypes::BORDER_CONSTANT;
+	while (true) {
+		auto key = cv::waitKey(500);
+		if (key == 'r') {
+			borad_type += 1;
+			if (borad_type >= cv::BorderTypes::BORDER_TRANSPARENT) {
+				borad_type = cv::BorderTypes::BORDER_CONSTANT;
+			}
+		}
+		cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255),rng.uniform(0, 255));
+		cv::copyMakeBorder(src, dst, top, bottom, left, right, borad_type, color);
+		cv::imshow("RESULT",dst);
+	}
+	*/
 
-	//DOG
-	cv::Mat g1, g2, gray_src, dog_img;
-	cv::cvtColor(src, gray_src, CV_BGR2GRAY);
-	cv::GaussianBlur(gray_src, g1, cv::Size(5, 5), 0, 0);
-	cv::GaussianBlur(g1, g2, cv::Size(5, 5), 0, 0);
-	cv::subtract(g1, g2, dog_img);
-
-	//归一化显示 如果不弄，会显示很暗
-	cv::normalize(dog_img, dog_img, 255, 0, cv::NORM_MINMAX);
-	cv::imshow("Dog Img", dog_img);
+	cv::GaussianBlur(src, dst, cv::Size(5, 5), 0, 0, cv::BorderTypes::BORDER_WRAP);
+	cv::imshow("Result", dst);
 	cv::waitKey(0);
-	std::cout << "Hello World!\n";
 	return 0;
 }
