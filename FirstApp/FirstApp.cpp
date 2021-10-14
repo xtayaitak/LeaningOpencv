@@ -415,10 +415,10 @@
 
 
 
-#pragma comment(lib,"opencv_core3414d.lib")
-#pragma comment(lib,"opencv_highgui3414d.lib")
-#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
 //形态学操作
 
 //int main()
@@ -468,10 +468,10 @@
 
 
 
-#pragma comment(lib,"opencv_core3414d.lib")
-#pragma comment(lib,"opencv_highgui3414d.lib")
-#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
 //提取水平和垂直线
 
 //int main()
@@ -708,6 +708,109 @@
 
 //图像边缘处理
 
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//int main()
+//{
+//	cv::Mat src = cv::imread("Me.png");
+//	cv::Mat dst;
+//
+//	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
+//	cv::imshow("Input Image", src);
+//
+//	/*
+//	int top = src.rows / 20;
+//	int bottom = src.rows / 20;
+//	int left = src.cols / 20;
+//	int right = src.cols / 20;
+//
+//	cv::RNG rng(132);
+//
+//	int borad_type = cv::BorderTypes::BORDER_CONSTANT;
+//	while (true) {
+//		auto key = cv::waitKey(500);
+//		if (key == 'r') {
+//			borad_type += 1;
+//			if (borad_type >= cv::BorderTypes::BORDER_TRANSPARENT) {
+//				borad_type = cv::BorderTypes::BORDER_CONSTANT;
+//			}
+//		}
+//		cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255),rng.uniform(0, 255));
+//		cv::copyMakeBorder(src, dst, top, bottom, left, right, borad_type, color);
+//		cv::imshow("RESULT",dst);
+//	}
+//	*/
+//
+//	cv::GaussianBlur(src, dst, cv::Size(5, 5), 0, 0, cv::BorderTypes::BORDER_WRAP);
+//	cv::imshow("Result", dst);
+//	cv::waitKey(0);
+//	return 0;
+//}
+
+
+
+
+//sobel 算子
+//#pragma comment(lib,"opencv_highgui3414d.lib")
+//#pragma comment(lib,"opencv_imgproc3414d.lib")
+//#pragma comment(lib,"opencv_core3414d.lib")
+//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+//int main()
+//{
+//	cv::Mat src = cv::imread("Me.png");
+//
+//	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
+//	cv::imshow("Input Image", src);
+//
+//	cv::Mat dst;
+//	cv::GaussianBlur(src, dst, cv::Size(3, 3), 0, 0);
+//
+//	cv::Mat gray_src;
+//	cv::cvtColor(dst, gray_src, CV_BGR2GRAY);
+//
+//
+//	cv::Mat xgrad, ygrad;
+//	//cv::Sobel(gray_src, xgrad, CV_16S, 1, 0, 3);
+//	//cv::Sobel(gray_src, ygrad, CV_16S, 0, 1, 3);
+//	cv::Scharr(gray_src, xgrad, CV_16S, 1, 0);
+//	cv::Scharr(gray_src, ygrad, CV_16S, 0, 1);
+//	cv::convertScaleAbs(xgrad, xgrad);
+//	cv::convertScaleAbs(ygrad, ygrad);
+//	cv::imshow("xgrad", xgrad);
+//	cv::imshow("ygrad", ygrad);
+//
+//	cv::imshow("Output", gray_src);
+//
+//	//cv::Mat xygrad;
+//	//cv::addWeighted(xgrad, 0.5, ygrad, 0.5, 0, xygrad);
+//	//cv::imshow("Fin",xygrad);
+//
+//	//手工处理代理addweighted竟然比addweigted好
+//	cv::Mat xygrad = cv::Mat(xgrad.size(), xgrad.type());
+//	int width = xygrad.cols;
+//	int height = xygrad.rows;
+//	for (int row = 0; row < height; row++)
+//	{
+//		for (int col = 0; col < width; col++){
+//			int xg = xgrad.at<uchar>(row, col);
+//			int yg = xgrad.at<uchar>(row, col);
+//			int xy = xg + yg;
+//
+//			xgrad.at<uchar>(row, col) = cv::saturate_cast<uchar>( xy);
+//		}
+//	}
+//	cv::addWeighted(xgrad, 0.5, ygrad, 0.5, 0, xygrad);
+//	cv::imshow("Fin",xygrad);
+//
+//	cv::waitKey();
+//	return 0;
+//}
+
+
+
+//Laplase算子
 #pragma comment(lib,"opencv_highgui3414d.lib")
 #pragma comment(lib,"opencv_imgproc3414d.lib")
 #pragma comment(lib,"opencv_core3414d.lib")
@@ -715,36 +818,29 @@
 int main()
 {
 	cv::Mat src = cv::imread("Me.png");
-	cv::Mat dst;
 
 	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
 	cv::imshow("Input Image", src);
 
-	/*
-	int top = src.rows / 20;
-	int bottom = src.rows / 20;
-	int left = src.cols / 20;
-	int right = src.cols / 20;
+	cv::Mat dst;
+	cv::GaussianBlur(src, dst, cv::Size(3, 3), 0, 0);
 
-	cv::RNG rng(132);
+	cv::Mat gray_src;
+	cv::cvtColor(dst, gray_src, CV_BGR2GRAY);
 
-	int borad_type = cv::BorderTypes::BORDER_CONSTANT;
-	while (true) {
-		auto key = cv::waitKey(500);
-		if (key == 'r') {
-			borad_type += 1;
-			if (borad_type >= cv::BorderTypes::BORDER_TRANSPARENT) {
-				borad_type = cv::BorderTypes::BORDER_CONSTANT;
-			}
-		}
-		cv::Scalar color = cv::Scalar(rng.uniform(0, 255), rng.uniform(0, 255),rng.uniform(0, 255));
-		cv::copyMakeBorder(src, dst, top, bottom, left, right, borad_type, color);
-		cv::imshow("RESULT",dst);
-	}
-	*/
 
-	cv::GaussianBlur(src, dst, cv::Size(5, 5), 0, 0, cv::BorderTypes::BORDER_WRAP);
-	cv::imshow("Result", dst);
-	cv::waitKey(0);
+	cv::Mat edge_image;
+	cv::Laplacian(gray_src, edge_image, CV_16S, 3);
+	cv::convertScaleAbs(edge_image, edge_image);
+
+	cv::imshow("Result", edge_image);
+
+
+	cv::threshold(edge_image, edge_image, 0, 255, CV_THRESH_OTSU | CV_THRESH_BINARY);
+
+	cv::imshow("Result", edge_image);
+
+
+	cv::waitKey();
 	return 0;
 }
