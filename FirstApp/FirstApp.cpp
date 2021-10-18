@@ -4,11 +4,16 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
+#pragma comment(lib,"opencv_core3414d.lib")
+#pragma comment(lib,"opencv_highgui3414d.lib")
+#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+#pragma comment(lib,"opencv_videoio3414d.lib")
+#pragma comment(lib,"opencv_imgproc3414d.lib")
+
+
+
 //看图片
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_videoio3414d.lib")
+
 //int main()
 //{
 //    cv::Mat img = cv::imread(R"(C:\Users\zds\Desktop\laojun_pic.png)",-1);
@@ -26,10 +31,6 @@
 
 
 //播放视频
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_videoio3414d.lib")
 //
 //int main()
 //{
@@ -52,10 +53,6 @@
 //}
 
 //播放视频带滑块
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_videoio3414d.lib")
 //
 //int g_slider_position = 0;
 //int g_run = 1, g_dontset = 0;
@@ -114,11 +111,6 @@
 
 
 //cv::threshold用法
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-
 
 //void sum_rgb(const cv::Mat& src, cv::Mat & dst) {
 //    //分割图像到颜色盘
@@ -165,10 +157,6 @@
 
 
 //阈值与自适应阈值
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
 //
 //
 //int main()
@@ -197,10 +185,6 @@
 
 
 //视频教程图像的淹膜操作
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
 //
 //
 //int main()
@@ -310,10 +294,6 @@
 //	return 0;
 //}
 
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
 //绘制开关与文字
 //void MyLine(cv::Mat &  mat)
 //{
@@ -347,10 +327,6 @@
 //}
 
 
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
 ////模糊图像
 ////模糊图像二
 //int main()
@@ -415,11 +391,6 @@
 
 
 
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//形态学操作
 
 //int main()
 //{
@@ -468,10 +439,7 @@
 
 
 
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
+
 //提取水平和垂直线
 
 //int main()
@@ -554,10 +522,7 @@
 
 
 //基本阀值操作
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+
 //
 //
 //cv::Mat src, dst,gray;
@@ -598,10 +563,7 @@
 
 //图像金子塔 上采样与降采样
 
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+
 //int main()
 //{
 //	cv::Mat src = cv::imread("test.jpg");
@@ -635,10 +597,7 @@
 
 //自定义线性滤波
 
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+
 //int main()
 //{
 //	cv::Mat src = cv::imread("Me.png");
@@ -708,10 +667,6 @@
 
 //图像边缘处理
 
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
 //int main()
 //{
 //	cv::Mat src = cv::imread("Me.png");
@@ -753,10 +708,7 @@
 
 
 //sobel 算子
-//#pragma comment(lib,"opencv_highgui3414d.lib")
-//#pragma comment(lib,"opencv_imgproc3414d.lib")
-//#pragma comment(lib,"opencv_core3414d.lib")
-//#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+
 //int main()
 //{
 //	cv::Mat src = cv::imread("Me.png");
@@ -811,36 +763,105 @@
 
 
 //Laplase算子
-#pragma comment(lib,"opencv_highgui3414d.lib")
-#pragma comment(lib,"opencv_imgproc3414d.lib")
-#pragma comment(lib,"opencv_core3414d.lib")
-#pragma comment(lib,"opencv_imgcodecs3414d.lib")
+
+//int main()
+//{
+//	cv::Mat src = cv::imread("Me.png");
+//
+//	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
+//	cv::imshow("Input Image", src);
+//
+//	cv::Mat dst;
+//	cv::GaussianBlur(src, dst, cv::Size(3, 3), 0, 0);
+//
+//	cv::Mat gray_src;
+//	cv::cvtColor(dst, gray_src, CV_BGR2GRAY);
+//
+//
+//	cv::Mat edge_image;
+//	cv::Laplacian(gray_src, edge_image, CV_16S, 3);
+//	cv::convertScaleAbs(edge_image, edge_image);
+//
+//	cv::imshow("Result", edge_image);
+//
+//
+//	cv::threshold(edge_image, edge_image, 0, 255, CV_THRESH_OTSU | CV_THRESH_BINARY);
+//
+//	cv::imshow("Result", edge_image);
+//
+//
+//	cv::waitKey();
+//	return 0;
+//}
+
+
+
+//Canny边缘检测算法
+//
+//
+//int t1_value = 50;
+//int max_value = 255;
+//void Canny_demo(int, void*);
+//
+//cv::Mat src;
+//cv::Mat gray_src;
+//
+//int main()
+//{
+//	src = cv::imread("Me.png");
+//	cv::imshow("Src", src);
+//
+//	cv::cvtColor(src, gray_src, CV_BGR2GRAY);
+//
+//	cv::namedWindow("Result Window", cv::WINDOW_AUTOSIZE);
+//
+//	cv::createTrackbar("Value", "Result Window", &t1_value, max_value, Canny_demo);
+//	Canny_demo(0, 0);
+//
+//
+//
+//
+//	cv::waitKey();
+//	return 0;
+//}
+//
+//void Canny_demo(int, void*)
+//{
+//	cv::Mat blur_mat;
+//	cv::blur(gray_src, blur_mat, cv::Size(3, 3));
+//
+//	cv::Mat edge_output;
+//	cv::Canny(blur_mat, edge_output, t1_value, t1_value * 2, 3);
+//
+//	//cv::Mat dst;
+//	//dst.create(src.size(), src.type());
+//	//src.copyTo(dst, edge_output);
+//	cv::imshow("Result Window", edge_output);
+//}
+
+//霍夫直线变换
+
 int main()
 {
-	cv::Mat src = cv::imread("Me.png");
+	cv::Mat src = cv::imread("Bin1.png");
 
-	cv::namedWindow("Input Image", cv::WINDOW_AUTOSIZE);
 	cv::imshow("Input Image", src);
 
+	cv::Mat src_gray;
+	cv::Canny(src, src_gray, 100, 200);
 	cv::Mat dst;
-	cv::GaussianBlur(src, dst, cv::Size(3, 3), 0, 0);
+	cv::cvtColor(src_gray, dst, CV_GRAY2BGR);
+	cv::imshow("Result", src_gray);
 
-	cv::Mat gray_src;
-	cv::cvtColor(dst, gray_src, CV_BGR2GRAY);
+	std::vector<cv::Vec4f> plines;
+	cv::HoughLinesP(src_gray, plines, 1, CV_PI / 180.0, 10, 0, 10);
+	cv::Scalar color = cv::Scalar(0, 0, 255);
+	for (const auto & line : plines) {
+		cv::line(dst, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]),color,3,cv::LINE_AA);
+	}
 
+	cv::imshow("Result2", dst);
 
-	cv::Mat edge_image;
-	cv::Laplacian(gray_src, edge_image, CV_16S, 3);
-	cv::convertScaleAbs(edge_image, edge_image);
-
-	cv::imshow("Result", edge_image);
-
-
-	cv::threshold(edge_image, edge_image, 0, 255, CV_THRESH_OTSU | CV_THRESH_BINARY);
-
-	cv::imshow("Result", edge_image);
-
-
-	cv::waitKey();
+	cv::waitKey(0);
 	return 0;
 }
