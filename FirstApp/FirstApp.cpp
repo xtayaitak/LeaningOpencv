@@ -841,27 +841,119 @@
 
 //霍夫直线变换
 
+//int main()
+//{
+//	cv::Mat src = cv::imread("Bin1.png");
+//
+//	cv::imshow("Input Image", src);
+//
+//	cv::Mat src_gray;
+//	cv::Canny(src, src_gray, 100, 200);
+//	cv::Mat dst;
+//	cv::cvtColor(src_gray, dst, CV_GRAY2BGR);
+//	cv::imshow("Result", src_gray);
+//
+//	std::vector<cv::Vec4f> plines;
+//	cv::HoughLinesP(src_gray, plines, 1, CV_PI / 180.0, 10, 0, 10);
+//	cv::Scalar color = cv::Scalar(0, 0, 255);
+//	for (const auto & line : plines) {
+//		cv::line(dst, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]),color,3,cv::LINE_AA);
+//	}
+//
+//	cv::imshow("Result2", dst);
+//
+//	cv::waitKey(0);
+//	return 0;
+//}
+
+
+//霍夫圆变换
+//int main()
+//{
+//	cv::Mat src = cv::imread("cell.JFIF");
+//	cv::imshow("Input Image", src);
+//
+//	cv::Mat m1;
+//	cv::medianBlur(src, m1, 5);
+//
+//	cv::imshow("result1", m1);
+//
+//	cv::Mat m2;
+//	cv::cvtColor(m1, m2, CV_BGR2GRAY);
+//
+//	cv::Mat m3;
+//	std::vector<cv::Vec3f> circles;
+//	cv::HoughCircles(m2, circles, CV_HOUGH_GRADIENT, 1, 10, 100, 30, 5, 50);
+//
+//
+//	cv::Mat dst;
+//	src.copyTo(dst);
+//	for (auto& it : circles) {
+//		cv::circle(dst, cv::Point(it[0], it[1]), it[2], cv::Scalar(0, 0, 255), 2, cv::LINE_AA);
+//		cv::circle(dst, cv::Point(it[0], it[1]), 2, cv::Scalar(98, 23, 255), 2, cv::LINE_AA);
+//	}
+//
+//	cv::imshow("result1", dst);
+//	cv::waitKey(0);
+//	return 0;
+//}
+
+
+//像素重映射
+void update_map(void);
+int index = 0;
+cv::Mat map_x, map_y;
+cv::Mat src;
 int main()
 {
-	cv::Mat src = cv::imread("Bin1.png");
-
+	src = cv::imread("cell.JFIF");
 	cv::imshow("Input Image", src);
 
-	cv::Mat src_gray;
-	cv::Canny(src, src_gray, 100, 200);
+	
+	map_x.create(src.size(), CV_32FC1);
+	map_y.create(src.size(), CV_32FC1);
+	index = 1;
+	update_map();
 	cv::Mat dst;
-	cv::cvtColor(src_gray, dst, CV_GRAY2BGR);
-	cv::imshow("Result", src_gray);
-
-	std::vector<cv::Vec4f> plines;
-	cv::HoughLinesP(src_gray, plines, 1, CV_PI / 180.0, 10, 0, 10);
-	cv::Scalar color = cv::Scalar(0, 0, 255);
-	for (const auto & line : plines) {
-		cv::line(dst, cv::Point(line[0], line[1]), cv::Point(line[2], line[3]),color,3,cv::LINE_AA);
-	}
-
-	cv::imshow("Result2", dst);
+	cv::remap(src, dst, map_x, map_y, cv::INTER_LINEAR, cv::BORDER_CONSTANT,cv::Scalar(0,255,255));
+	cv::imshow("Output Image", dst);
 
 	cv::waitKey(0);
 	return 0;
+}
+
+
+void update_map(void)
+{
+	for (int i = 0; i < src.rows; i++) {
+		for (int j = 0; j < src.cols; j++) {
+			switch (index)
+			{
+			case 0:
+				if (j > (src.cols * 0.25) && j <= (src.cols * 0.75) && i >(src.rows * 0.25) && i <= (src.rows *0.75)) {
+					map_x.at<float>(i,j) = 2 * (j - (src.cols * 0.25) + 0.5);
+					map_y.at<float>(i, j) = 2 * (i - (src.rows * 0.25) + 0.5);
+				}
+				else {
+					map_x.at<float>(i,j) = 0;
+					map_y.at<float>(i, j) = 0;
+				}
+				break;
+			case 1:
+				map_x.at<float>(i, j) = src.cols - j - 1;
+				map_y.at<float>(i, j) = i;
+				break;
+			case 2:
+				map_x.at<float>(i, j) = j;
+				map_y.at<float>(i, j) = src.rows - i - 1;
+				break;
+			case 3:
+				map_x.at<float>(i, j) = src.cols - j - 1;
+				map_y.at<float>(i, j) = src.rows - i - 1;
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
