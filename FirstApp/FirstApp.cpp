@@ -900,60 +900,123 @@
 
 
 //像素重映射
-void update_map(void);
-int index = 0;
-cv::Mat map_x, map_y;
-cv::Mat src;
+//void update_map(void);
+//int index = 0;
+//cv::Mat map_x, map_y;
+//cv::Mat src;
+//int main()
+//{
+//	src = cv::imread("cell.JFIF");
+//	cv::imshow("Input Image", src);
+//
+//	
+//	map_x.create(src.size(), CV_32FC1);
+//	map_y.create(src.size(), CV_32FC1);
+//	index = 1;
+//	update_map();
+//	cv::Mat dst;
+//	cv::remap(src, dst, map_x, map_y, cv::INTER_LINEAR, cv::BORDER_CONSTANT,cv::Scalar(0,255,255));
+//	cv::imshow("Output Image", dst);
+//
+//	cv::waitKey(0);
+//	return 0;
+//}
+//
+//
+//void update_map(void)
+//{
+//	for (int i = 0; i < src.rows; i++) {
+//		for (int j = 0; j < src.cols; j++) {
+//			switch (index)
+//			{
+//			case 0:
+//				if (j > (src.cols * 0.25) && j <= (src.cols * 0.75) && i >(src.rows * 0.25) && i <= (src.rows *0.75)) {
+//					map_x.at<float>(i,j) = 2 * (j - (src.cols * 0.25) + 0.5);
+//					map_y.at<float>(i, j) = 2 * (i - (src.rows * 0.25) + 0.5);
+//				}
+//				else {
+//					map_x.at<float>(i,j) = 0;
+//					map_y.at<float>(i, j) = 0;
+//				}
+//				break;
+//			case 1:
+//				map_x.at<float>(i, j) = src.cols - j - 1;
+//				map_y.at<float>(i, j) = i;
+//				break;
+//			case 2:
+//				map_x.at<float>(i, j) = j;
+//				map_y.at<float>(i, j) = src.rows - i - 1;
+//				break;
+//			case 3:
+//				map_x.at<float>(i, j) = src.cols - j - 1;
+//				map_y.at<float>(i, j) = src.rows - i - 1;
+//				break;
+//			default:
+//				break;
+//			}
+//		}
+//	}
+//}
+
+
+//直方图均衡化
+//int main()
+//{
+//	cv::Mat	src = cv::imread("Me.png");
+//	cv::Mat gray;
+//	cv::cvtColor(src, gray, CV_BGR2GRAY);
+//	cv::imshow("Gray", gray);
+//	cv::Mat dst;
+//	cv::equalizeHist(gray, dst);
+//	cv::imshow("Result",dst);
+//	cv::waitKey();
+//	return 0;
+//}
+
+
+
 int main()
 {
-	src = cv::imread("cell.JFIF");
-	cv::imshow("Input Image", src);
+	cv::Mat	src = cv::imread("Me.png");
 
-	
-	map_x.create(src.size(), CV_32FC1);
-	map_y.create(src.size(), CV_32FC1);
-	index = 1;
-	update_map();
-	cv::Mat dst;
-	cv::remap(src, dst, map_x, map_y, cv::INTER_LINEAR, cv::BORDER_CONSTANT,cv::Scalar(0,255,255));
-	cv::imshow("Output Image", dst);
-
-	cv::waitKey(0);
-	return 0;
-}
+	std::vector<cv::Mat> bgr_planes;
+	cv::split(src, bgr_planes);
+	cv::imshow("Src", src);
 
 
-void update_map(void)
-{
-	for (int i = 0; i < src.rows; i++) {
-		for (int j = 0; j < src.cols; j++) {
-			switch (index)
-			{
-			case 0:
-				if (j > (src.cols * 0.25) && j <= (src.cols * 0.75) && i >(src.rows * 0.25) && i <= (src.rows *0.75)) {
-					map_x.at<float>(i,j) = 2 * (j - (src.cols * 0.25) + 0.5);
-					map_y.at<float>(i, j) = 2 * (i - (src.rows * 0.25) + 0.5);
-				}
-				else {
-					map_x.at<float>(i,j) = 0;
-					map_y.at<float>(i, j) = 0;
-				}
-				break;
-			case 1:
-				map_x.at<float>(i, j) = src.cols - j - 1;
-				map_y.at<float>(i, j) = i;
-				break;
-			case 2:
-				map_x.at<float>(i, j) = j;
-				map_y.at<float>(i, j) = src.rows - i - 1;
-				break;
-			case 3:
-				map_x.at<float>(i, j) = src.cols - j - 1;
-				map_y.at<float>(i, j) = src.rows - i - 1;
-				break;
-			default:
-				break;
-			}
-		}
+	//计算直方图
+	int hist_size = 256;
+	float range[] = { 0,256 };
+	const float* ranges = { range };
+	cv::Mat b_hist, g_hist, r_hist;
+	cv::calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &hist_size, &ranges, true, false);
+	cv::calcHist(&bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, &hist_size, &ranges, true, false);
+	cv::calcHist(&bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, &hist_size, &ranges, true, false);
+
+
+	//归一化
+	int hint_h = 400;
+	int hist_w = 512;
+	int bin_w = hist_w / hist_size;
+
+	cv::Mat hist_image(hist_w, hint_h, CV_8UC3, cv::Scalar(0, 0, 0));
+	cv::normalize(b_hist, b_hist, 0, hint_h, cv::NORM_MINMAX);
+	cv::normalize(g_hist, g_hist, 0, hint_h, cv::NORM_MINMAX);
+	cv::normalize(r_hist, r_hist, 0, hint_h, cv::NORM_MINMAX);
+
+	//render histogram chart
+	for (int i = 1; i < hist_size; i++) {
+		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(b_hist.at<float>(i - 1))), 
+			cv::Point((i) * bin_w, hint_h - cvRound(b_hist.at<float>(i))), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
+
+		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(g_hist.at<float>(i - 1))),
+			cv::Point((i) * bin_w, hint_h - cvRound(g_hist.at<float>(i))), cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
+
+		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(r_hist.at<float>(i - 1))),
+			cv::Point((i) * bin_w, hint_h - cvRound(r_hist.at<float>(i))), cv::Scalar(0,0, 255), 2, cv::LINE_AA);
 	}
+
+	cv::imshow("33", hist_image);
+	cv::waitKey();
+	return 0;
 }
