@@ -975,48 +975,148 @@
 
 
 
+//int main()
+//{
+//	cv::Mat	src = cv::imread("Me.png");
+//
+//	std::vector<cv::Mat> bgr_planes;
+//	cv::split(src, bgr_planes);
+//	cv::imshow("Src", src);
+//
+//
+//	//计算直方图
+//	int hist_size = 256;
+//	float range[] = { 0,256 };
+//	const float* ranges = { range };
+//	cv::Mat b_hist, g_hist, r_hist;
+//	cv::calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &hist_size, &ranges, true, false);
+//	cv::calcHist(&bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, &hist_size, &ranges, true, false);
+//	cv::calcHist(&bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, &hist_size, &ranges, true, false);
+//
+//
+//	//归一化
+//	int hint_h = 400;
+//	int hist_w = 512;
+//	int bin_w = hist_w / hist_size;
+//
+//	cv::Mat hist_image(hist_w, hint_h, CV_8UC3, cv::Scalar(0, 0, 0));
+//	cv::normalize(b_hist, b_hist, 0, hint_h, cv::NORM_MINMAX);
+//	cv::normalize(g_hist, g_hist, 0, hint_h, cv::NORM_MINMAX);
+//	cv::normalize(r_hist, r_hist, 0, hint_h, cv::NORM_MINMAX);
+//
+//	//render histogram chart
+//	for (int i = 1; i < hist_size; i++) {
+//		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(b_hist.at<float>(i - 1))), 
+//			cv::Point((i) * bin_w, hint_h - cvRound(b_hist.at<float>(i))), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
+//
+//		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(g_hist.at<float>(i - 1))),
+//			cv::Point((i) * bin_w, hint_h - cvRound(g_hist.at<float>(i))), cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
+//
+//		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(r_hist.at<float>(i - 1))),
+//			cv::Point((i) * bin_w, hint_h - cvRound(r_hist.at<float>(i))), cv::Scalar(0,0, 255), 2, cv::LINE_AA);
+//	}
+//
+//	cv::imshow("33", hist_image);
+//	cv::waitKey();
+//	return 0;
+//}
+
+//直方图比较
+//int main()
+//{
+//	cv::Mat me =  cv::imread("Me.png");
+//	cv::Mat me_small_gray = cv::imread("Me_base_small.png");
+//	cv::Mat me2 = cv::imread("Me1.png");
+//	cv::Mat other = cv::imread("1.jpg");
+//
+//	//转化为hsv图像
+//	cv::cvtColor(me, me, CV_BGR2HSV);
+//	cv::cvtColor(me_small_gray, me_small_gray, CV_BGR2HSV);
+//	cv::cvtColor(me2, me2, CV_BGR2HSV);
+//	cv::cvtColor(other, other, CV_BGR2HSV);
+//
+//	cv::imshow("me", me);
+//	cv::imshow("me_small_gray", me_small_gray);
+//	cv::imshow("me2", me2);
+//	cv::imshow("other", other);
+//
+//	auto temp_channel_count = me.channels();
+//	auto data_size = me.type();
+//
+//	int channels[] = { 0,1 };
+//	int hbins = 50, sbins = 56;//色调量化为50级 饱和度量化为56级
+//	int hsize[] = { hbins,sbins };
+//
+//	float hranges[] = { 0, 180 };
+//	float sranges[] = { 0, 256 };
+//	const float* ranges[] = { hranges, sranges };
+//
+//	cv::MatND hist_me,hist_me_small_gray,hist_me2,hist_other;
+//	cv::calcHist(&me, 1, channels, cv::Mat(), hist_me, 2, hsize, ranges, true, false);
+//	cv::calcHist(&me_small_gray, 1, channels, cv::Mat(), hist_me_small_gray, 2, hsize, ranges, true, false);
+//	cv::calcHist(&me2, 1, channels, cv::Mat(), hist_me2, 2, hsize, ranges, true, false);
+//	cv::calcHist(&other, 1, channels, cv::Mat(), hist_other, 2, hsize, ranges, true, false);
+//
+//	cv::normalize(hist_me, hist_me, 1.0, 0.0, cv::NORM_MINMAX, -1, cv::Mat());
+//	cv::normalize(hist_me_small_gray, hist_me_small_gray, 1.0, 0.0, cv::NORM_MINMAX, -1, cv::Mat());
+//	cv::normalize(hist_me2, hist_me2, 1.0, 0.0, cv::NORM_MINMAX, -1, cv::Mat());
+//	cv::normalize(hist_other, hist_other, 1.0, 0.0, cv::NORM_MINMAX, -1, cv::Mat());
+//
+//
+//	auto me_vs_me_small_gray =  cv::compareHist(hist_me, hist_me_small_gray, cv::HISTCMP_CORREL);
+//	auto me_vs_me2 = cv::compareHist(hist_me, hist_me2, cv::HISTCMP_CORREL);
+//	auto small_gray_vs_me2 = cv::compareHist(hist_me_small_gray, hist_me2, cv::HISTCMP_CORREL);
+//
+//	std::cout << "me_vs_me_small_gray:" << me_vs_me_small_gray << std::endl;
+//	std::cout << "me_vs_me2:" << me_vs_me2 << std::endl;
+//	std::cout << "small_gray_vs_me2:" << small_gray_vs_me2 << std::endl;
+//
+//	auto othre1 = cv::compareHist(hist_me, hist_other, cv::HISTCMP_CORREL);
+//	auto othre2 = cv::compareHist(hist_me_small_gray, hist_other, cv::HISTCMP_CORREL);
+//	auto othre3 = cv::compareHist(hist_me2, hist_other, cv::HISTCMP_CORREL);
+//
+//	std::cout << "othre1:" << othre1 << std::endl;
+//	std::cout << "othre2:" << othre2 << std::endl;
+//	std::cout << "othre3:" << othre3 << std::endl;
+//
+//	cv::waitKey();
+//
+//	return -1;
+//}
+
+//直方图反射投影
+int bins = 12;
+void Hist_And_Backprojection(int, void*);
+cv::Mat hue;
 int main()
 {
-	cv::Mat	src = cv::imread("Me.png");
+	cv::Mat src1 = cv::imread("t1.jpg");
 
-	std::vector<cv::Mat> bgr_planes;
-	cv::split(src, bgr_planes);
-	cv::imshow("Src", src);
+	cv::Mat src1_hsv;
+	cv::cvtColor(src1, src1_hsv, CV_BGR2HSV);
 
+	cv::imshow("src1_hsv", src1_hsv);
 
-	//计算直方图
-	int hist_size = 256;
-	float range[] = { 0,256 };
-	const float* ranges = { range };
-	cv::Mat b_hist, g_hist, r_hist;
-	cv::calcHist(&bgr_planes[0], 1, 0, cv::Mat(), b_hist, 1, &hist_size, &ranges, true, false);
-	cv::calcHist(&bgr_planes[1], 1, 0, cv::Mat(), g_hist, 1, &hist_size, &ranges, true, false);
-	cv::calcHist(&bgr_planes[2], 1, 0, cv::Mat(), r_hist, 1, &hist_size, &ranges, true, false);
+	//其中一个通道给分出来
+	hue.create(src1_hsv.size(), src1_hsv.depth());
+	int nchannels[] = { 0,0 };
+	cv::mixChannels(&src1_hsv, 1, &hue, 1, nchannels, 1);
 
-
-	//归一化
-	int hint_h = 400;
-	int hist_w = 512;
-	int bin_w = hist_w / hist_size;
-
-	cv::Mat hist_image(hist_w, hint_h, CV_8UC3, cv::Scalar(0, 0, 0));
-	cv::normalize(b_hist, b_hist, 0, hint_h, cv::NORM_MINMAX);
-	cv::normalize(g_hist, g_hist, 0, hint_h, cv::NORM_MINMAX);
-	cv::normalize(r_hist, r_hist, 0, hint_h, cv::NORM_MINMAX);
-
-	//render histogram chart
-	for (int i = 1; i < hist_size; i++) {
-		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(b_hist.at<float>(i - 1))), 
-			cv::Point((i) * bin_w, hint_h - cvRound(b_hist.at<float>(i))), cv::Scalar(255, 0, 0), 2, cv::LINE_AA);
-
-		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(g_hist.at<float>(i - 1))),
-			cv::Point((i) * bin_w, hint_h - cvRound(g_hist.at<float>(i))), cv::Scalar(0, 255, 0), 2, cv::LINE_AA);
-
-		cv::line(hist_image, cv::Point((i - 1) * bin_w, hint_h - cvRound(r_hist.at<float>(i - 1))),
-			cv::Point((i) * bin_w, hint_h - cvRound(r_hist.at<float>(i))), cv::Scalar(0,0, 255), 2, cv::LINE_AA);
-	}
-
-	cv::imshow("33", hist_image);
+	cv::createTrackbar("Hist Bins", "src1_hsv", &bins, 180, Hist_And_Backprojection);
+	Hist_And_Backprojection(0,0);
+	
 	cv::waitKey();
-	return 0;
+	return -1;
+}
+void Hist_And_Backprojection(int, void*)
+{
+	float range[] = { 0,180 };
+	const float* histRanges = { range };
+	cv::Mat hist;
+	cv::calcHist(&hue, 1, 0, cv::Mat(), hist,1, &bins, &histRanges, true, false);
+	cv::normalize(hist, hist, 0, 255, cv::NORM_MINMAX, -1, cv::Mat());
+
+	cv::Mat back_prj_image;
+	cv::calcBackProject(&hue, 1, 0, hist, back_prj_image, &histRanges, 1, true);
+	cv::imshow("BackProj", back_prj_image);
 }
